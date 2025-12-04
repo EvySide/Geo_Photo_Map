@@ -5,6 +5,7 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/mainwindow.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/QFlags
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/QMap
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/QVector
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/q20algorithm.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/q20functional.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/q20memory.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/q20type_traits.h
@@ -25,6 +26,8 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/mainwindow.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qbytearraylist.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qbytearrayview.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcalendar.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcborcommon.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcborvalue.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qchar.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcompare.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcompare_impl.h
@@ -36,13 +39,20 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/mainwindow.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcontainerinfo.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcontainertools_impl.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcontiguouscache.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcoreapplication.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcoreapplication_platform.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcoreevent.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcryptographichash.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qdarwinhelpers.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qdatastream.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qdatetime.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qdeadlinetimer.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qdebug.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qelapsedtimer.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qendian.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qeventloop.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qexceptionhandling.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qfactoryinterface.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qflags.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qfloat16.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qforeach.h
@@ -58,6 +68,8 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/mainwindow.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qitemselectionmodel.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qiterable.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qiterator.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qjsonobject.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qjsonvalue.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qlatin1stringview.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qline.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qlist.h
@@ -71,6 +83,7 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/mainwindow.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qmetatype.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qminmax.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qnamespace.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qnativeinterface.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qnumeric.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qobject.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qobject_impl.h
@@ -78,7 +91,9 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/mainwindow.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qobjectdefs_impl.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qoverload.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qpair.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qplugin.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qpoint.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qpointer.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qprocessordetection.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qrect.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qrefcount.h
@@ -126,12 +141,14 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/mainwindow.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qtypes.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qurl.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qutf8stringview.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/quuid.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qvariant.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qvarlengtharray.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qvector.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qversiontagging.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qxptype_traits.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qyieldcpu.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/QImageReader
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/QPageLayout
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/QPixmap
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qaction.h
@@ -144,6 +161,8 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/mainwindow.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qfontmetrics.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qicon.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qimage.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qimageiohandler.h
+ mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qimagereader.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qkeysequence.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qpagelayout.h
  mdp:D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qpageranges.h

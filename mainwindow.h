@@ -11,6 +11,7 @@
 #include <QDateTime>
 #include <QPixmap>
 #include <QWebEngineView>
+#include <QImageReader>
 
 // Информация об одной фотографии
 struct PhotoInfo
@@ -57,9 +58,11 @@ private:
     void scanDirectory(const QString &path);
     QTreeWidgetItem* ensureTreePath(const QStringList &parts, QMap<QString, QTreeWidgetItem*> &cache,
                                     QTreeWidgetItem *root, int photoIndex, const QString &fileName);
-    void assignCoordinatesIfMissing(PhotoInfo &info, int index) const;
     QString buildMapHtml() const;
     void centerOnMarker(int index);
+    void assignFallbackCoords(PhotoInfo &info, int seed) const;
+    bool extractGpsFromExif(const QString &path, double &lat, double &lng) const;
+    static bool parseExifCoord(const QString &value, const QString &ref, double &result);
 };
 
 #endif // MAINWINDOW_H

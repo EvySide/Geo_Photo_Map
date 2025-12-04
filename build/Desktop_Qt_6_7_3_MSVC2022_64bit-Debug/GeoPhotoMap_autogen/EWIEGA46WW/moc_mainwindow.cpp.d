@@ -3,6 +3,7 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Deb
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/QFlags \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/QMap \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/QVector \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/q20algorithm.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/q20functional.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/q20memory.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/q20type_traits.h \
@@ -23,6 +24,8 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Deb
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qbytearraylist.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qbytearrayview.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcalendar.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcborcommon.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcborvalue.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qchar.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcompare.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcompare_impl.h \
@@ -34,13 +37,20 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Deb
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcontainerinfo.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcontainertools_impl.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcontiguouscache.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcoreapplication.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcoreapplication_platform.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcoreevent.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qcryptographichash.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qdarwinhelpers.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qdatastream.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qdatetime.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qdeadlinetimer.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qdebug.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qelapsedtimer.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qendian.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qeventloop.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qexceptionhandling.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qfactoryinterface.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qflags.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qfloat16.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qforeach.h \
@@ -56,6 +66,8 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Deb
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qitemselectionmodel.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qiterable.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qiterator.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qjsonobject.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qjsonvalue.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qlatin1stringview.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qline.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qlist.h \
@@ -69,6 +81,7 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Deb
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qmetatype.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qminmax.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qnamespace.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qnativeinterface.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qnumeric.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qobject.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qobject_impl.h \
@@ -76,7 +89,9 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Deb
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qobjectdefs_impl.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qoverload.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qpair.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qplugin.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qpoint.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qpointer.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qprocessordetection.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qrect.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qrefcount.h \
@@ -124,12 +139,14 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Deb
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qtypes.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qurl.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qutf8stringview.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/quuid.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qvariant.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qvarlengtharray.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qvector.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qversiontagging.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qxptype_traits.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtCore/qyieldcpu.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/QImageReader \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/QPageLayout \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/QPixmap \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qaction.h \
@@ -142,6 +159,8 @@ D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Deb
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qfontmetrics.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qicon.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qimage.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qimageiohandler.h \
+  D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qimagereader.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qkeysequence.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qpagelayout.h \
   D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qpageranges.h \

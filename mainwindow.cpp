@@ -27,6 +27,9 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QByteArray>
+#include <QRegularExpression>
+#include <QtGlobal>
 #include <algorithm>
 #include <cmath>
 
@@ -172,48 +175,8 @@ void MainWindow::createMap()
 // Простейшие тестовые данные
 void MainWindow::loadSampleData()
 {
-    m_photos.clear();
-
-    const QString baseDir = QCoreApplication::applicationDirPath();
-    m_currentRoot = baseDir;
-
-    PhotoInfo p1;
-    p1.filePath = baseDir + "/sample1.jpg";  // можешь положить сюда реальное фото
-    p1.latitude = 55.7558;
-    p1.longitude = 37.6173;
-    p1.timestamp = QDateTime(QDate(2024, 5, 10), QTime(14, 30));
-    p1.locationName = tr("Москва");
-    m_photos.append(p1);
-
-    PhotoInfo p2;
-    p2.filePath = baseDir + "/sample2.jpg";
-    p2.latitude = 59.9375;
-    p2.longitude = 30.3086;
-    p2.timestamp = QDateTime(QDate(2023, 8, 20), QTime(18, 15));
-    p2.locationName = tr("Санкт-Петербург");
-    m_photos.append(p2);
-
-    PhotoInfo p3;
-    p3.filePath = baseDir + "/sample3.jpg";
-    p3.latitude = 48.8566;
-    p3.longitude = 2.3522;
-    p3.timestamp = QDateTime(QDate(2022, 7, 3), QTime(12, 5));
-    p3.locationName = tr("Париж");
-    m_photos.append(p3);
-
-    // Здесь в реальном приложении можно читать EXIF
-    // и подставлять реальные координаты и время
-}
-
-void MainWindow::assignCoordinatesIfMissing(PhotoInfo &info, int index) const
-{
-    if (info.latitude != 0.0 || info.longitude != 0.0)
-        return;
-
-    const double lon = std::fmod(index * 42.0, 360.0) - 180.0;
-    const double lat = qBound(-80.0, 80.0, 60.0 * std::sin(index * 0.7));
-    info.latitude = lat;
-    info.longitude = lon;
+    m_photos.clear(); // без демонстрационных данных
+    m_currentRoot = QString();
 }
 
 void MainWindow::scanDirectory(const QString &path)
@@ -235,7 +198,14 @@ void MainWindow::scanDirectory(const QString &path)
         info.locationName = fi.absoluteDir().dirName();
         info.latitude = 0.0;
         info.longitude = 0.0;
-        assignCoordinatesIfMissing(info, counter);
+
+        double lat = 0.0, lng = 0.0;
+        if (extractGpsFromExif(file, lat, lng)) {
+            info.latitude = lat;
+            info.longitude = lng;
+        }
+
+        assignFallbackCoords(info, counter);
         loaded.append(info);
         ++counter;
     }
@@ -250,8 +220,9 @@ void MainWindow::scanDirectory(const QString &path)
     createMap();
     populateTree();
     statusBar()->showMessage(
-        tr("Загружено %1 фото из \"%2\"")
+        tr("Загружено %1 фото (с GPS: %2) из \"%3\"")
             .arg(m_photos.size())
+            .arg(std::count_if(m_photos.begin(), m_photos.end(), [](const PhotoInfo &p){ return p.latitude != 0.0 || p.longitude != 0.0; }))
             .arg(QDir(path).dirName()),
         4000);
 }
@@ -524,9 +495,10 @@ QString MainWindow::buildMapHtml() const
     const markers = [];
 
     markersData.forEach(m => {
+      if (typeof m.lat !== 'number' || typeof m.lng !== 'number') return;
       const popupHtml = `<b>${m.title || 'Фото'}</b><br>${m.subtitle || ''}` +
         (m.image ? `<br><img class="popup-img" src="${m.image}" />` : '');
-      const marker = L.marker([m.lat || 0, m.lng || 0]).addTo(map).bindPopup(popupHtml);
+      const marker = L.marker([m.lat, m.lng]).addTo(map).bindPopup(popupHtml);
       marker.photoId = m.id;
       markers.push(marker);
     });
@@ -552,4 +524,92 @@ void MainWindow::centerOnMarker(int index)
         return;
 
     m_mapView->page()->runJavaScript(QStringLiteral("centerOn(%1);").arg(index));
+}
+
+void MainWindow::assignFallbackCoords(PhotoInfo &info, int seed) const
+{
+    if (info.latitude != 0.0 || info.longitude != 0.0)
+        return;
+
+    // Детеминированное распределение по миру, чтобы отметки были видны даже без GPS
+    const quint32 h = qHash(info.filePath) ^ quint32(seed * 2654435761U);
+    const double lon = (double(h % 360000) / 1000.0) - 180.0;      // -180..180
+    const double lat = (double((h / 360000) % 160000) / 1000.0) - 80.0; // -80..80
+    info.latitude = lat;
+    info.longitude = lon;
+}
+
+bool MainWindow::parseExifCoord(const QString &value, const QString &ref, double &result)
+{
+    // value examples: "55/1 45/1 1234/100" или "55 45 12.34"
+    const QStringList tokens = value.split(QRegularExpression("[ ,]+"), Qt::SkipEmptyParts);
+    if (tokens.size() < 2)
+        return false;
+
+    auto toDouble = [](const QString &token) -> double {
+        const QStringList frac = token.split('/');
+        if (frac.size() == 2 && frac[1].toDouble() != 0.0)
+            return frac[0].toDouble() / frac[1].toDouble();
+        return token.toDouble();
+    };
+
+    const double deg = toDouble(tokens.value(0));
+    const double min = toDouble(tokens.value(1));
+    const double sec = toDouble(tokens.value(2, QStringLiteral("0")));
+
+    result = deg + (min / 60.0) + (sec / 3600.0);
+    const QString refUp = ref.trimmed().toUpper();
+    if (refUp == "S" || refUp == "W")
+        result = -result;
+    return true;
+}
+
+bool MainWindow::extractGpsFromExif(const QString &path, double &lat, double &lng) const
+{
+    try {
+        // 1. Через QImageReader::text (если Qt собран с Exiv2)
+        QImageReader reader(path);
+        const QStringList keys = reader.textKeys();
+        if (!keys.isEmpty()) {
+            auto findKey = [&](const QStringList &names) -> QString {
+                for (const QString &k : keys) {
+                    for (const QString &n : names) {
+                        if (k.compare(n, Qt::CaseInsensitive) == 0)
+                            return reader.text(k);
+                    }
+                }
+                return QString();
+            };
+
+            QString latRef = findKey({QStringLiteral("Exif.GPSInfo.GPSLatitudeRef"),
+                                      QStringLiteral("GPSLatitudeRef"),
+                                      QStringLiteral("Exif.GPSLatitudeRef")});
+            QString latVal = findKey({QStringLiteral("Exif.GPSInfo.GPSLatitude"),
+                                      QStringLiteral("GPSLatitude"),
+                                      QStringLiteral("Exif.GPSLatitude")});
+            QString lngRef = findKey({QStringLiteral("Exif.GPSInfo.GPSLongitudeRef"),
+                                      QStringLiteral("GPSLongitudeRef"),
+                                      QStringLiteral("Exif.GPSLongitudeRef")});
+            QString lngVal = findKey({QStringLiteral("Exif.GPSInfo.GPSLongitude"),
+                                      QStringLiteral("GPSLongitude"),
+                                      QStringLiteral("Exif.GPSLongitude")});
+
+            if (!latVal.isEmpty() && !lngVal.isEmpty()) {
+                if (latRef.isEmpty()) latRef = QStringLiteral("N");
+                if (lngRef.isEmpty()) lngRef = QStringLiteral("E");
+
+                double outLat = 0.0, outLng = 0.0;
+                if (parseExifCoord(latVal, latRef, outLat) && parseExifCoord(lngVal, lngRef, outLng)) {
+                    lat = outLat;
+                    lng = outLng;
+                    return true;
+                }
+            }
+        }
+
+        // 2. Безопасный выход: не удалось прочитать GPS
+        return false;
+    } catch (...) {
+        return false;
+    }
 }
