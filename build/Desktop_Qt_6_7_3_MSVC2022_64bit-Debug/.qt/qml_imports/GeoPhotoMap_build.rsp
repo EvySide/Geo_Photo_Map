@@ -1,0 +1,9 @@
+-rootPath
+D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap
+-cmake-output
+-output-file
+D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug/.qt/qml_imports/GeoPhotoMap_build.cmake
+-importPath
+D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug
+-importPath
+D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/qml

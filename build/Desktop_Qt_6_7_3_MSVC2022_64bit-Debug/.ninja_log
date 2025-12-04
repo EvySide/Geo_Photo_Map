@@ -1,0 +1,24 @@
+# ninja log v5
+5	98	7865079964490157	.qt/qml_imports/GeoPhotoMap_build.cmake	47896ec966f6b37b
+5	98	7865079964490157	D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug/.qt/qml_imports/GeoPhotoMap_build.cmake	47896ec966f6b37b
+99	370	7865079966701468	GeoPhotoMap_autogen/timestamp	a11da92af3f83c00
+99	370	7865079966701468	GeoPhotoMap_autogen/mocs_compilation.cpp	a11da92af3f83c00
+99	370	7865079966701468	D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug/GeoPhotoMap_autogen/timestamp	a11da92af3f83c00
+99	370	7865079966701468	D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug/GeoPhotoMap_autogen/mocs_compilation.cpp	a11da92af3f83c00
+374	1877	7865079982353909	CMakeFiles/GeoPhotoMap.dir/GeoPhotoMap_autogen/mocs_compilation.cpp.obj	3ec75ef6753e83b
+381	2405	7865079987628389	CMakeFiles/GeoPhotoMap.dir/mainwindow.cpp.obj	4763d6a6b26b44c4
+9	158	7865081315591319	GeoPhotoMap_autogen/timestamp	a11da92af3f83c00
+9	158	7865081315591319	GeoPhotoMap_autogen/mocs_compilation.cpp	a11da92af3f83c00
+9	158	7865081315591319	D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug/GeoPhotoMap_autogen/timestamp	a11da92af3f83c00
+9	158	7865081315591319	D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug/GeoPhotoMap_autogen/mocs_compilation.cpp	a11da92af3f83c00
+162	3232	7865081450905654	CMakeFiles/GeoPhotoMap.dir/main.cpp.obj	f7164d05ba6aceb4
+10	152	7865082339220128	GeoPhotoMap_autogen/timestamp	a11da92af3f83c00
+10	152	7865082339220128	GeoPhotoMap_autogen/mocs_compilation.cpp	a11da92af3f83c00
+10	152	7865082339220128	D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug/GeoPhotoMap_autogen/timestamp	a11da92af3f83c00
+10	152	7865082339220128	D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug/GeoPhotoMap_autogen/mocs_compilation.cpp	a11da92af3f83c00
+10	146	7865083636371409	GeoPhotoMap_autogen/timestamp	a11da92af3f83c00
+10	146	7865083636371409	GeoPhotoMap_autogen/mocs_compilation.cpp	a11da92af3f83c00
+10	146	7865083636371409	D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug/GeoPhotoMap_autogen/timestamp	a11da92af3f83c00
+10	146	7865083636371409	D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug/GeoPhotoMap_autogen/mocs_compilation.cpp	a11da92af3f83c00
+150	3775	7865083681163579	CMakeFiles/GeoPhotoMap.dir/main.cpp.obj	f7164d05ba6aceb4
+3775	4133	7865083684575187	GeoPhotoMap.exe	8f865ebafb7a11ff
