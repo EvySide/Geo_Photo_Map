@@ -16,7 +16,7 @@
 // Информация об одной фотографии
 struct PhotoInfo
 {
-    QString filePath;      // путь к файлу фото (может быть пустой)
+    QString filePath;      // путь к файлу фото 
     double latitude;       // широта  (-90..90)
     double longitude;      // долгота (-180..180)
     QDateTime timestamp;   // время съёмки
@@ -60,7 +60,6 @@ private:
                                     QTreeWidgetItem *root, int photoIndex, const QString &fileName);
     QString buildMapHtml() const;
     void centerOnMarker(int index);
-    void assignFallbackCoords(PhotoInfo &info, int seed) const;
     bool extractGpsFromExif(const QString &path, double &lat, double &lng) const;
     static bool parseExifCoord(const QString &value, const QString &ref, double &result);
 };

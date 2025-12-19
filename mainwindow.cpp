@@ -205,7 +205,6 @@ void MainWindow::scanDirectory(const QString &path)
             info.longitude = lng;
         }
 
-        assignFallbackCoords(info, counter);
         loaded.append(info);
         ++counter;
     }
@@ -220,7 +219,7 @@ void MainWindow::scanDirectory(const QString &path)
     createMap();
     populateTree();
     statusBar()->showMessage(
-        tr("Загружено %1 фото (с GPS: %2) из \"%3\"")
+        tr("Загружено %1 фото, GPS найдено: %2 (%3)")
             .arg(m_photos.size())
             .arg(std::count_if(m_photos.begin(), m_photos.end(), [](const PhotoInfo &p){ return p.latitude != 0.0 || p.longitude != 0.0; }))
             .arg(QDir(path).dirName()),
@@ -450,6 +449,9 @@ QString MainWindow::buildMapHtml() const
     QJsonArray arr;
     for (int i = 0; i < m_photos.size(); ++i) {
         const PhotoInfo &info = m_photos[i];
+        if (info.latitude == 0.0 && info.longitude == 0.0)
+            continue; // пропускаем без координат
+
         QJsonObject obj;
         obj["id"] = i;
         obj["lat"] = info.latitude;
@@ -526,38 +528,38 @@ void MainWindow::centerOnMarker(int index)
     m_mapView->page()->runJavaScript(QStringLiteral("centerOn(%1);").arg(index));
 }
 
-void MainWindow::assignFallbackCoords(PhotoInfo &info, int seed) const
-{
-    if (info.latitude != 0.0 || info.longitude != 0.0)
-        return;
-
-    // Детеминированное распределение по миру, чтобы отметки были видны даже без GPS
-    const quint32 h = qHash(info.filePath) ^ quint32(seed * 2654435761U);
-    const double lon = (double(h % 360000) / 1000.0) - 180.0;      // -180..180
-    const double lat = (double((h / 360000) % 160000) / 1000.0) - 80.0; // -80..80
-    info.latitude = lat;
-    info.longitude = lon;
-}
-
 bool MainWindow::parseExifCoord(const QString &value, const QString &ref, double &result)
 {
-    // value examples: "55/1 45/1 1234/100" или "55 45 12.34"
-    const QStringList tokens = value.split(QRegularExpression("[ ,]+"), Qt::SkipEmptyParts);
-    if (tokens.size() < 2)
+    // Поддержка форматов: "55/1 45/1 1234/100", "55 45 12.34", "55°45'12.34\"", "55.7522"
+    QRegularExpression re(QStringLiteral("([+-]?\\d+(?:[\\.,]\\d+)?(?:/\\d+(?:[\\.,]\\d+)?)?)"));
+    QRegularExpressionMatchIterator it = re.globalMatch(value);
+    QStringList tokens;
+    while (it.hasNext()) {
+        const auto m = it.next();
+        tokens << m.captured(1);
+    }
+
+    if (tokens.size() == 1) {
+        // Уже в виде десятичной координаты
+        result = tokens.first().replace(',', '.').toDouble();
+    } else if (tokens.size() >= 2) {
+        auto toDouble = [](const QString &token) -> double {
+            QString cleaned = token;
+            cleaned.replace(',', '.');
+            const QStringList frac = cleaned.split('/');
+            if (frac.size() == 2 && frac[1].toDouble() != 0.0)
+                return frac[0].toDouble() / frac[1].toDouble();
+            return cleaned.toDouble();
+        };
+
+        const double deg = toDouble(tokens.value(0));
+        const double min = toDouble(tokens.value(1));
+        const double sec = toDouble(tokens.value(2, QStringLiteral("0")));
+        result = deg + (min / 60.0) + (sec / 3600.0);
+    } else {
         return false;
+    }
 
-    auto toDouble = [](const QString &token) -> double {
-        const QStringList frac = token.split('/');
-        if (frac.size() == 2 && frac[1].toDouble() != 0.0)
-            return frac[0].toDouble() / frac[1].toDouble();
-        return token.toDouble();
-    };
-
-    const double deg = toDouble(tokens.value(0));
-    const double min = toDouble(tokens.value(1));
-    const double sec = toDouble(tokens.value(2, QStringLiteral("0")));
-
-    result = deg + (min / 60.0) + (sec / 3600.0);
     const QString refUp = ref.trimmed().toUpper();
     if (refUp == "S" || refUp == "W")
         result = -result;
