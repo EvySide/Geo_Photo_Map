@@ -167,6 +167,7 @@ GeoPhotoMap_autogen/timestamp: \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qpagesize.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qpaintdevice.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qpalette.h \
+	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qpen.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qpicture.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qpixelformat.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qpixmap.h \
@@ -174,7 +175,10 @@ GeoPhotoMap_autogen/timestamp: \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qregion.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qrgb.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qrgba64.h \
+	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qtextcursor.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qtextdocument.h \
+	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qtextformat.h \
+	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qtextoption.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qtgui-config.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qtguiexports.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtGui/qtguiglobal.h \
@@ -197,7 +201,9 @@ GeoPhotoMap_autogen/timestamp: \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWebEngineWidgets/qtwebenginewidgetsglobal.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWebEngineWidgets/qwebengineview.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/QComboBox \
+	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/QDoubleSpinBox \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/QLabel \
+	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/QLineEdit \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/QMainWindow \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/QPushButton \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/QTreeWidget \
@@ -210,11 +216,13 @@ GeoPhotoMap_autogen/timestamp: \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qcombobox.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qframe.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qlabel.h \
+	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qlineedit.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qmainwindow.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qpushbutton.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qrubberband.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qsizepolicy.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qslider.h \
+	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qspinbox.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qstyle.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qstyleoption.h \
 	D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWidgets/qtabbar.h \

@@ -19,10 +19,14 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QFormLayout>
 #include <QTreeWidgetItem>
 #include <QPushButton>
 #include <QStatusBar>
 #include <QtMath>
+#include <QStack>
 #include <QWebEngineView>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -102,12 +106,16 @@ void MainWindow::setupUi()
     m_openButton->setCursor(Qt::PointingHandCursor);
     m_openButton->setStyleSheet("font-weight: 600;");
 
+    m_editGpsButton = new QPushButton(tr("GPS"), central);
+    m_editGpsButton->setCursor(Qt::PointingHandCursor);
+
     auto *sortLabel = new QLabel(tr("Сортировка:"), central);
     m_sortCombo = new QComboBox(central);
     m_sortCombo->addItem(tr("По времени"));
     m_sortCombo->addItem(tr("По месту (название)"));
 
     controlsLayout->addWidget(m_openButton);
+    controlsLayout->addWidget(m_editGpsButton);
     controlsLayout->addWidget(sortLabel);
     controlsLayout->addWidget(m_sortCombo);
     controlsLayout->addStretch();
@@ -157,6 +165,8 @@ void MainWindow::setupUi()
 
     connect(m_openButton, &QPushButton::clicked,
             this, &MainWindow::openDirectory);
+    connect(m_editGpsButton, &QPushButton::clicked,
+            this, &MainWindow::editGpsForSelected);
     connect(m_sortCombo, &QComboBox::currentIndexChanged,
             this, &MainWindow::resortList);
     connect(m_tree, &QTreeWidget::itemSelectionChanged,
@@ -198,9 +208,9 @@ void MainWindow::scanDirectory(const QString &path)
         info.locationName = fi.absoluteDir().dirName();
         info.latitude = 0.0;
         info.longitude = 0.0;
-
         double lat = 0.0, lng = 0.0;
-        if (extractGpsFromExif(file, lat, lng)) {
+        info.hasGps = extractGpsFromExif(file, lat, lng);
+        if (info.hasGps) {
             info.latitude = lat;
             info.longitude = lng;
         }
@@ -221,7 +231,7 @@ void MainWindow::scanDirectory(const QString &path)
     statusBar()->showMessage(
         tr("Загружено %1 фото, GPS найдено: %2 (%3)")
             .arg(m_photos.size())
-            .arg(std::count_if(m_photos.begin(), m_photos.end(), [](const PhotoInfo &p){ return p.latitude != 0.0 || p.longitude != 0.0; }))
+            .arg(std::count_if(m_photos.begin(), m_photos.end(), [](const PhotoInfo &p){ return p.hasGps; }))
             .arg(QDir(path).dirName()),
         4000);
 }
@@ -240,6 +250,90 @@ void MainWindow::openDirectory()
         return;
 
     scanDirectory(dir);
+}
+
+void MainWindow::editGpsForSelected()
+{
+    if (!m_tree || m_photos.isEmpty())
+        return;
+
+    QTreeWidgetItem *item = m_tree->currentItem();
+    if (!item) {
+        statusBar()->showMessage(tr("Выберите фотографию в списке слева"), 3000);
+        return;
+    }
+
+    QVariant data = item->data(0, Qt::UserRole);
+    if (!data.isValid()) {
+        statusBar()->showMessage(tr("Выберите файл, а не папку"), 3000);
+        return;
+    }
+
+    const int idx = data.toInt();
+    if (idx < 0 || idx >= m_photos.size())
+        return;
+
+    PhotoInfo info = m_photos[idx];
+
+    QDialog dlg(this);
+    dlg.setWindowTitle(tr("GPS координаты"));
+    auto *form = new QFormLayout(&dlg);
+
+    auto *pathLabel = new QLabel(QDir::toNativeSeparators(info.filePath), &dlg);
+    pathLabel->setWordWrap(true);
+
+    auto *latSpin = new QDoubleSpinBox(&dlg);
+    latSpin->setRange(-90.0, 90.0);
+    latSpin->setDecimals(6);
+    latSpin->setValue(info.latitude);
+
+    auto *lngSpin = new QDoubleSpinBox(&dlg);
+    lngSpin->setRange(-180.0, 180.0);
+    lngSpin->setDecimals(6);
+    lngSpin->setValue(info.longitude);
+
+    auto *nameEdit = new QLineEdit(info.locationName, &dlg);
+
+    form->addRow(tr("Файл:"), pathLabel);
+    form->addRow(tr("Широта:"), latSpin);
+    form->addRow(tr("Долгота:"), lngSpin);
+    form->addRow(tr("Место:"), nameEdit);
+
+    auto *buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dlg);
+    form->addRow(buttons);
+    connect(buttons, &QDialogButtonBox::accepted, &dlg, &QDialog::accept);
+    connect(buttons, &QDialogButtonBox::rejected, &dlg, &QDialog::reject);
+
+    if (dlg.exec() != QDialog::Accepted)
+        return;
+
+    info.latitude = latSpin->value();
+    info.longitude = lngSpin->value();
+    info.hasGps = true; // пользователь задал координаты вручную
+    info.locationName = nameEdit->text().trimmed();
+    m_photos[idx] = info;
+
+    createMap();
+    populateTree();
+
+    // найти и выделить текущий элемент заново
+    if (m_tree) {
+        QStack<QTreeWidgetItem*> stack;
+        for (int i = 0; i < m_tree->topLevelItemCount(); ++i)
+            stack.push(m_tree->topLevelItem(i));
+        while (!stack.isEmpty()) {
+            QTreeWidgetItem *it = stack.pop();
+            if (it->data(0, Qt::UserRole).toInt() == idx) {
+                m_tree->setCurrentItem(it);
+                break;
+            }
+            for (int i = 0; i < it->childCount(); ++i)
+                stack.push(it->child(i));
+        }
+    }
+
+    centerOnMarker(idx);
+    statusBar()->showMessage(tr("GPS обновлён"), 2000);
 }
 
 void MainWindow::populateTree()
@@ -346,11 +440,16 @@ QTreeWidgetItem* MainWindow::ensureTreePath(const QStringList &parts,
             const PhotoInfo &info = m_photos[photoIndex];
             QPixmap icon = loadThumbnail(info.filePath, m_tree->iconSize(), fileName);
             fileItem->setIcon(0, QIcon(icon));
-            fileItem->setToolTip(0, tr("%1\n%2\nШирота: %3\nДолгота: %4")
-                                    .arg(info.locationName.isEmpty() ? part : info.locationName)
-                                    .arg(info.timestamp.toString("yyyy-MM-dd hh:mm"))
-                                    .arg(info.latitude, 0, 'f', 4)
-                                    .arg(info.longitude, 0, 'f', 4));
+            const QString tooltip = info.hasGps
+                    ? tr("%1\n%2\nШирота: %3\nДолгота: %4")
+                          .arg(info.locationName.isEmpty() ? part : info.locationName)
+                          .arg(info.timestamp.toString("yyyy-MM-dd hh:mm"))
+                          .arg(info.latitude, 0, 'f', 4)
+                          .arg(info.longitude, 0, 'f', 4)
+                    : tr("%1\n%2\nGPS: не найден")
+                          .arg(info.locationName.isEmpty() ? part : info.locationName)
+                          .arg(info.timestamp.toString("yyyy-MM-dd hh:mm"));
+            fileItem->setToolTip(0, tooltip);
 
             cache.insert(currentKey, fileItem);
         }
@@ -394,9 +493,11 @@ void MainWindow::updatePreview(int photoIndex)
     const QString name = info.locationName.isEmpty()
             ? tr("Без названия")
             : info.locationName;
-    const QString coords = tr("Широта: %1, Долгота: %2")
-                               .arg(info.latitude, 0, 'f', 4)
-                               .arg(info.longitude, 0, 'f', 4);
+    const QString coords = info.hasGps
+            ? tr("Широта: %1, Долгота: %2")
+                  .arg(info.latitude, 0, 'f', 4)
+                  .arg(info.longitude, 0, 'f', 4)
+            : tr("GPS не найден");
 
     QPixmap pix = loadThumbnail(info.filePath, QSize(520, 320), name);
     m_previewImage->setPixmap(pix);
@@ -449,8 +550,8 @@ QString MainWindow::buildMapHtml() const
     QJsonArray arr;
     for (int i = 0; i < m_photos.size(); ++i) {
         const PhotoInfo &info = m_photos[i];
-        if (info.latitude == 0.0 && info.longitude == 0.0)
-            continue; // пропускаем без координат
+        if (!info.hasGps)
+            continue; // пропускаем только реально без координат
 
         QJsonObject obj;
         obj["id"] = i;
@@ -539,9 +640,10 @@ bool MainWindow::parseExifCoord(const QString &value, const QString &ref, double
         tokens << m.captured(1);
     }
 
+    double raw = 0.0;
     if (tokens.size() == 1) {
         // Уже в виде десятичной координаты
-        result = tokens.first().replace(',', '.').toDouble();
+        raw = tokens.first().replace(',', '.').toDouble();
     } else if (tokens.size() >= 2) {
         auto toDouble = [](const QString &token) -> double {
             QString cleaned = token;
@@ -552,17 +654,24 @@ bool MainWindow::parseExifCoord(const QString &value, const QString &ref, double
             return cleaned.toDouble();
         };
 
-        const double deg = toDouble(tokens.value(0));
-        const double min = toDouble(tokens.value(1));
-        const double sec = toDouble(tokens.value(2, QStringLiteral("0")));
-        result = deg + (min / 60.0) + (sec / 3600.0);
+        double deg = toDouble(tokens.value(0));
+        const double sign = (deg < 0.0) ? -1.0 : 1.0;
+        deg = std::abs(deg);
+        const double min = std::abs(toDouble(tokens.value(1)));
+        const double sec = std::abs(toDouble(tokens.value(2, QStringLiteral("0"))));
+        raw = sign * (deg + (min / 60.0) + (sec / 3600.0));
     } else {
         return false;
     }
 
     const QString refUp = ref.trimmed().toUpper();
-    if (refUp == "S" || refUp == "W")
-        result = -result;
+    const int refSign = (refUp == "S" || refUp == "W") ? -1 : 1;
+    const double magnitude = std::abs(raw);
+    result = (refSign == -1) ? -magnitude : (raw < 0.0 ? -magnitude : magnitude);
+
+    const double maxAbs = (refUp == "E" || refUp == "W") ? 180.0 : 90.0;
+    if (std::abs(result) > maxAbs)
+        return false;
     return true;
 }
 

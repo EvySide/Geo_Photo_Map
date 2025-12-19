@@ -6,6 +6,8 @@
 #include <QTreeWidget>
 #include <QComboBox>
 #include <QPushButton>
+#include <QLineEdit>
+#include <QDoubleSpinBox>
 #include <QMap>
 #include <QVector>
 #include <QDateTime>
@@ -21,6 +23,7 @@ struct PhotoInfo
     double longitude;      // долгота (-180..180)
     QDateTime timestamp;   // время съёмки
     QString locationName;  // название места
+    bool hasGps = false;   // GPS считан из EXIF
 };
 
 class MainWindow : public QMainWindow
@@ -34,11 +37,13 @@ private slots:
     void resortList();                 // пересортировать список (по времени/месту)
     void onTreeSelectionChanged();     // подсветить соответствующий маркер
     void openDirectory();              // выбрать директорию с фото
+    void editGpsForSelected();         // задать/изменить GPS для фото
 
 private:
     QWebEngineView *m_mapView = nullptr;
     QTreeWidget *m_tree = nullptr;
     QPushButton *m_openButton = nullptr;
+    QPushButton *m_editGpsButton = nullptr;
     QComboBox *m_sortCombo = nullptr;
     QLabel *m_previewImage = nullptr;
     QLabel *m_previewCaption = nullptr;
