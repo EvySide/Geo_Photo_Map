@@ -278,6 +278,18 @@ void MainWindow::editGpsForSelected()
         return;
 
     PhotoInfo info = m_photos[idx];
+    const QFileInfo fi(info.filePath);
+    const QString ext = fi.suffix().toLower();
+    if (ext != "jpg" && ext != "jpeg" && ext != "tif" && ext != "tiff") {
+        QMessageBox::warning(this, tr("Формат не поддерживается"),
+                             tr("Запись GPS в EXIF поддерживается только для JPEG/TIFF."));
+        return;
+    }
+    if (!fi.isWritable()) {
+        QMessageBox::warning(this, tr("Файл только для чтения"),
+                             tr("Нет прав на запись. Снимите атрибут \"только чтение\"."));
+        return;
+    }
 
     QDialog dlg(this);
     dlg.setWindowTitle(tr("GPS координаты"));
@@ -321,8 +333,15 @@ void MainWindow::editGpsForSelected()
         return;
     }
 
-    info.latitude = newLat;
-    info.longitude = newLng;
+    double verifyLat = 0.0, verifyLng = 0.0;
+    if (!extractGpsFromExif(info.filePath, verifyLat, verifyLng)) {
+        QMessageBox::warning(this, tr("EXIF не подтверждён"),
+                             tr("Записать координаты не удалось. Проверьте файл и попробуйте снова."));
+        return;
+    }
+
+    info.latitude = verifyLat;
+    info.longitude = verifyLng;
     info.locationName = nameEdit->text().trimmed();
     info.hasGps = true;
     m_photos[idx] = info;
