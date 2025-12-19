@@ -1394,6 +1394,18 @@
 			"value" : "FALSE"
 		},
 		{
+			"name" : "Exiv2_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "No help, variable specified on the command line."
+				}
+			],
+			"type" : "PATH",
+			"value" : "D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2"
+		},
+		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Threads",
 			"properties" : 
 			[

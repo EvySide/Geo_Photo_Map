@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets WebEngineWidgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets WebEngineWidgets)
+find_package(Exiv2 CONFIG QUIET)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -39,6 +40,22 @@ else()
 endif()
 
 target_link_libraries(GeoPhotoMap PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::WebEngineWidgets)
+
+if(Exiv2_FOUND)
+    if(TARGET Exiv2::exiv2)
+        target_link_libraries(GeoPhotoMap PRIVATE Exiv2::exiv2)
+    elseif(TARGET exiv2lib)
+        target_link_libraries(GeoPhotoMap PRIVATE exiv2lib)
+    elseif(EXIV2_LIBRARIES)
+        target_link_libraries(GeoPhotoMap PRIVATE ${EXIV2_LIBRARIES})
+    endif()
+    target_compile_definitions(GeoPhotoMap PRIVATE HAVE_EXIV2)
+    if(EXIV2_INCLUDE_DIRS)
+        target_include_directories(GeoPhotoMap PRIVATE ${EXIV2_INCLUDE_DIRS})
+    endif()
+else()
+    message(WARNING "Exiv2 not found. EXIF GPS write will be disabled.")
+endif()
 
 
 if(${QT_VERSION} VERSION_LESS 6.1.0)

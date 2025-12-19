@@ -7,10 +7,10 @@
 				{
 					"build" : ".",
 					"hasInstallRule" : true,
-					"jsonFile" : "directory-.-Debug-a9ce9ced5e4be578a09f.json",
+					"jsonFile" : "directory-.-Debug-c1f2f15928e44d8aaf53.json",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "3.16"
+						"string" : "3.12"
 					},
 					"projectIndex" : 0,
 					"source" : ".",
@@ -46,7 +46,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "GeoPhotoMap::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-GeoPhotoMap-Debug-162e1d312a7689f5f1c5.json",
+					"jsonFile" : "target-GeoPhotoMap-Debug-ddb2f32ade434b5a48ee.json",
 					"name" : "GeoPhotoMap",
 					"projectIndex" : 0
 				},
@@ -67,7 +67,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "GeoPhotoMap_qmlimportscan::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-GeoPhotoMap_qmlimportscan-Debug-dc097e0b13fab84d9b5a.json",
+					"jsonFile" : "target-GeoPhotoMap_qmlimportscan-Debug-86e81638f5b98a69c7ce.json",
 					"name" : "GeoPhotoMap_qmlimportscan",
 					"projectIndex" : 0
 				}

@@ -1394,6 +1394,18 @@
 			"value" : "FALSE"
 		},
 		{
+			"name" : "Exiv2_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for Exiv2."
+				}
+			],
+			"type" : "PATH",
+			"value" : "Exiv2_DIR-NOTFOUND"
+		},
+		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Threads",
 			"properties" : 
 			[

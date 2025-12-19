@@ -3741,6 +3741,31 @@
 			"path" : "D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/lib/cmake/Qt6/Qt6Dependencies.cmake"
 		},
 		{
+			"isExternal" : true,
+			"path" : "D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2ConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2Config.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/Apps/Qt/Qt_App/Tools/CMake_64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2Targets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2Targets-debug.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2Targets-release.cmake"
+		},
+		{
 			"isCMake" : true,
 			"isExternal" : true,
 			"path" : "D:/Apps/Qt/Qt_App/Tools/CMake_64/share/cmake-3.30/Modules/GNUInstallDirs.cmake"

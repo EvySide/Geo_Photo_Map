@@ -895,4 +895,9 @@ GeoPhotoMap_autogen/timestamp: \
 	D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/main.cpp \
 	D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/mainwindow.cpp \
 	D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/mainwindow.h \
+	D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2Config.cmake \
+	D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2ConfigVersion.cmake \
+	D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2Targets-debug.cmake \
+	D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2Targets-release.cmake \
+	D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2Targets.cmake \
 	D:/Apps/Qt/Qt_App/Tools/CMake_64/bin/cmake.exe

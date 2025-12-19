@@ -66,6 +66,7 @@ private:
     QString buildMapHtml() const;
     void centerOnMarker(int index);
     bool extractGpsFromExif(const QString &path, double &lat, double &lng) const;
+    bool writeGpsToExif(const QString &path, double lat, double lng, QString *error);
     static bool parseExifCoord(const QString &value, const QString &ref, double &result);
 };
 

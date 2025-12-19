@@ -34,8 +34,14 @@
 #include <QByteArray>
 #include <QRegularExpression>
 #include <QtGlobal>
+#include <QMessageBox>
+#include <sstream>
 #include <algorithm>
 #include <cmath>
+
+#ifdef HAVE_EXIV2
+#include <exiv2/exiv2.hpp>
+#endif
 
 // ---------------------------
 // Реализация MainWindow
@@ -198,7 +204,6 @@ void MainWindow::scanDirectory(const QString &path)
                     QDir::Files,
                     QDirIterator::Subdirectories);
 
-    int counter = 0;
     while (it.hasNext()) {
         const QString file = it.next();
         QFileInfo fi(file);
@@ -216,7 +221,6 @@ void MainWindow::scanDirectory(const QString &path)
         }
 
         loaded.append(info);
-        ++counter;
     }
 
     if (loaded.isEmpty()) {
@@ -307,10 +311,20 @@ void MainWindow::editGpsForSelected()
     if (dlg.exec() != QDialog::Accepted)
         return;
 
-    info.latitude = latSpin->value();
-    info.longitude = lngSpin->value();
-    info.hasGps = true; // пользователь задал координаты вручную
+    const double newLat = latSpin->value();
+    const double newLng = lngSpin->value();
+
+    QString error;
+    if (!writeGpsToExif(info.filePath, newLat, newLng, &error)) {
+        QMessageBox::warning(this, tr("Не удалось записать EXIF"),
+                             error.isEmpty() ? tr("Запись GPS в EXIF недоступна.") : error);
+        return;
+    }
+
+    info.latitude = newLat;
+    info.longitude = newLng;
     info.locationName = nameEdit->text().trimmed();
+    info.hasGps = true;
     m_photos[idx] = info;
 
     createMap();
@@ -333,7 +347,7 @@ void MainWindow::editGpsForSelected()
     }
 
     centerOnMarker(idx);
-    statusBar()->showMessage(tr("GPS обновлён"), 2000);
+    statusBar()->showMessage(tr("GPS записан в EXIF"), 2000);
 }
 
 void MainWindow::populateTree()
@@ -677,50 +691,169 @@ bool MainWindow::parseExifCoord(const QString &value, const QString &ref, double
 
 bool MainWindow::extractGpsFromExif(const QString &path, double &lat, double &lng) const
 {
+#ifdef HAVE_EXIV2
     try {
-        // 1. Через QImageReader::text (если Qt собран с Exiv2)
-        QImageReader reader(path);
-        const QStringList keys = reader.textKeys();
-        if (!keys.isEmpty()) {
-            auto findKey = [&](const QStringList &names) -> QString {
-                for (const QString &k : keys) {
-                    for (const QString &n : names) {
-                        if (k.compare(n, Qt::CaseInsensitive) == 0)
-                            return reader.text(k);
-                    }
-                }
-                return QString();
-            };
+        auto image = Exiv2::ImageFactory::open(path.toStdString());
+        if (!image.get())
+            return false;
 
-            QString latRef = findKey({QStringLiteral("Exif.GPSInfo.GPSLatitudeRef"),
-                                      QStringLiteral("GPSLatitudeRef"),
-                                      QStringLiteral("Exif.GPSLatitudeRef")});
-            QString latVal = findKey({QStringLiteral("Exif.GPSInfo.GPSLatitude"),
-                                      QStringLiteral("GPSLatitude"),
-                                      QStringLiteral("Exif.GPSLatitude")});
-            QString lngRef = findKey({QStringLiteral("Exif.GPSInfo.GPSLongitudeRef"),
-                                      QStringLiteral("GPSLongitudeRef"),
-                                      QStringLiteral("Exif.GPSLongitudeRef")});
-            QString lngVal = findKey({QStringLiteral("Exif.GPSInfo.GPSLongitude"),
-                                      QStringLiteral("GPSLongitude"),
-                                      QStringLiteral("Exif.GPSLongitude")});
+        image->readMetadata();
+        Exiv2::ExifData &exif = image->exifData();
+        if (exif.empty())
+            return false;
 
-            if (!latVal.isEmpty() && !lngVal.isEmpty()) {
-                if (latRef.isEmpty()) latRef = QStringLiteral("N");
-                if (lngRef.isEmpty()) lngRef = QStringLiteral("E");
+        auto itLat = exif.findKey(Exiv2::ExifKey("Exif.GPSInfo.GPSLatitude"));
+        auto itLatRef = exif.findKey(Exiv2::ExifKey("Exif.GPSInfo.GPSLatitudeRef"));
+        auto itLng = exif.findKey(Exiv2::ExifKey("Exif.GPSInfo.GPSLongitude"));
+        auto itLngRef = exif.findKey(Exiv2::ExifKey("Exif.GPSInfo.GPSLongitudeRef"));
+        if (itLat == exif.end() || itLng == exif.end())
+            return false;
 
-                double outLat = 0.0, outLng = 0.0;
-                if (parseExifCoord(latVal, latRef, outLat) && parseExifCoord(lngVal, lngRef, outLng)) {
-                    lat = outLat;
-                    lng = outLng;
-                    return true;
-                }
-            }
+        const QString latRef = (itLatRef != exif.end())
+                ? QString::fromStdString(itLatRef->value().toString())
+                : QStringLiteral("N");
+        const QString lngRef = (itLngRef != exif.end())
+                ? QString::fromStdString(itLngRef->value().toString())
+                : QStringLiteral("E");
+
+        const int latCount = itLat->value().count();
+        const int lngCount = itLng->value().count();
+        auto rationalToDouble = [](const Exiv2::Rational &r) -> double {
+            return r.second != 0 ? double(r.first) / double(r.second) : 0.0;
+        };
+
+        double outLat = 0.0, outLng = 0.0;
+        if (latCount >= 3 && lngCount >= 3) {
+            const double dLat = rationalToDouble(itLat->value().toRational(0));
+            const double mLat = rationalToDouble(itLat->value().toRational(1));
+            const double sLat = rationalToDouble(itLat->value().toRational(2));
+            const double dLng = rationalToDouble(itLng->value().toRational(0));
+            const double mLng = rationalToDouble(itLng->value().toRational(1));
+            const double sLng = rationalToDouble(itLng->value().toRational(2));
+            outLat = dLat + (mLat / 60.0) + (sLat / 3600.0);
+            outLng = dLng + (mLng / 60.0) + (sLng / 3600.0);
+            if (latRef.trimmed().toUpper() == "S")
+                outLat = -outLat;
+            if (lngRef.trimmed().toUpper() == "W")
+                outLng = -outLng;
+        } else {
+            if (!parseExifCoord(QString::fromStdString(itLat->value().toString()), latRef, outLat))
+                return false;
+            if (!parseExifCoord(QString::fromStdString(itLng->value().toString()), lngRef, outLng))
+                return false;
         }
 
-        // 2. Безопасный выход: не удалось прочитать GPS
-        return false;
+        lat = outLat;
+        lng = outLng;
+        return true;
     } catch (...) {
+        // fallthrough to QImageReader below
+    }
+#endif
+
+    // Через QImageReader::text (если Qt собран с поддержкой Exif)
+    QImageReader reader(path);
+    const QStringList keys = reader.textKeys();
+    if (keys.isEmpty())
+        return false;
+
+    auto findKey = [&](const QStringList &names) -> QString {
+        for (const QString &k : keys) {
+            for (const QString &n : names) {
+                if (k.compare(n, Qt::CaseInsensitive) == 0)
+                    return reader.text(k);
+            }
+        }
+        return QString();
+    };
+
+    QString latRef = findKey({QStringLiteral("Exif.GPSInfo.GPSLatitudeRef"),
+                              QStringLiteral("GPSLatitudeRef"),
+                              QStringLiteral("Exif.GPSLatitudeRef")});
+    QString latVal = findKey({QStringLiteral("Exif.GPSInfo.GPSLatitude"),
+                              QStringLiteral("GPSLatitude"),
+                              QStringLiteral("Exif.GPSLatitude")});
+    QString lngRef = findKey({QStringLiteral("Exif.GPSInfo.GPSLongitudeRef"),
+                              QStringLiteral("GPSLongitudeRef"),
+                              QStringLiteral("Exif.GPSLongitudeRef")});
+    QString lngVal = findKey({QStringLiteral("Exif.GPSInfo.GPSLongitude"),
+                              QStringLiteral("GPSLongitude"),
+                              QStringLiteral("Exif.GPSLongitude")});
+
+    if (!latVal.isEmpty() && !lngVal.isEmpty()) {
+        if (latRef.isEmpty()) latRef = QStringLiteral("N");
+        if (lngRef.isEmpty()) lngRef = QStringLiteral("E");
+
+        double outLat = 0.0, outLng = 0.0;
+        if (parseExifCoord(latVal, latRef, outLat) && parseExifCoord(lngVal, lngRef, outLng)) {
+            lat = outLat;
+            lng = outLng;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool MainWindow::writeGpsToExif(const QString &path, double lat, double lng, QString *error)
+{
+#ifdef HAVE_EXIV2
+    try {
+        auto image = Exiv2::ImageFactory::open(path.toStdString());
+        if (!image.get()) {
+            if (error) *error = tr("Не удалось открыть файл.");
+            return false;
+        }
+
+        image->readMetadata();
+        Exiv2::ExifData &exif = image->exifData();
+
+        auto makeRationalString = [](double value) -> std::string {
+            double absVal = std::abs(value);
+            int deg = int(std::floor(absVal));
+            double minFloat = (absVal - deg) * 60.0;
+            int min = int(std::floor(minFloat));
+            double secFloat = (minFloat - min) * 60.0;
+            int secDen = 10000;
+            int secNum = int(std::round(secFloat * secDen));
+            if (secNum >= secDen * 60) {
+                secNum = 0;
+                min += 1;
+            }
+            if (min >= 60) {
+                min = 0;
+                deg += 1;
+            }
+
+            std::ostringstream oss;
+            oss << deg << "/1 " << min << "/1 " << secNum << "/" << secDen;
+            return oss.str();
+        };
+
+        exif["Exif.GPSInfo.GPSVersionID"] = "2 3 0 0";
+        exif["Exif.GPSInfo.GPSMapDatum"] = "WGS-84";
+        exif["Exif.GPSInfo.GPSLatitudeRef"] = (lat < 0.0 ? "S" : "N");
+        exif["Exif.GPSInfo.GPSLongitudeRef"] = (lng < 0.0 ? "W" : "E");
+        auto latValue = Exiv2::Value::create(Exiv2::unsignedRational);
+        latValue->read(makeRationalString(lat));
+        exif["Exif.GPSInfo.GPSLatitude"].setValue(latValue.get());
+
+        auto lngValue = Exiv2::Value::create(Exiv2::unsignedRational);
+        lngValue->read(makeRationalString(lng));
+        exif["Exif.GPSInfo.GPSLongitude"].setValue(lngValue.get());
+
+        image->setExifData(exif);
+        image->writeMetadata();
+        return true;
+    } catch (const std::exception &e) {
+        if (error) *error = QString::fromUtf8(e.what());
         return false;
     }
+#else
+    Q_UNUSED(path);
+    Q_UNUSED(lat);
+    Q_UNUSED(lng);
+    if (error) *error = tr("Exiv2 не подключён. Установите библиотеку Exiv2.");
+    return false;
+#endif
 }

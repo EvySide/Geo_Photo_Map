@@ -259,6 +259,9 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
+//No help, variable specified on the command line.
+Exiv2_DIR:PATH=D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2
+
 //Value Computed by CMake
 GeoPhotoMap_BINARY_DIR:STATIC=D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug
 

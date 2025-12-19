@@ -899,6 +899,12 @@
 		"D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/lib/cmake/Qt6/QtPublicWalkLibsHelpers.cmake",
 		"D:/Apps/Qt/Qt_App/Tools/CMake_64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake",
 		"D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/lib/cmake/Qt6/Qt6Dependencies.cmake",
+		"D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2ConfigVersion.cmake",
+		"D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2Config.cmake",
+		"D:/Apps/Qt/Qt_App/Tools/CMake_64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake",
+		"D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2Targets.cmake",
+		"D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2Targets-debug.cmake",
+		"D:/Qt_Projects/vcpkg/installed/x64-windows/share/exiv2/exiv2Targets-release.cmake",
 		"D:/Apps/Qt/Qt_App/Tools/CMake_64/share/cmake-3.30/Modules/GNUInstallDirs.cmake",
 		"D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug/.qt/qml_imports/GeoPhotoMap_conf.cmake"
 	],
@@ -920,6 +926,7 @@
 	"MOC_COMPILATION_FILE" : "D:/Qt_Projects/GeoPhotoMap/GeoPhotoMap/build/Desktop_Qt_6_7_3_MSVC2022_64bit-Debug/GeoPhotoMap_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : 
 	[
+		"HAVE_EXIV2",
 		"QT_CORE_LIB",
 		"QT_GUI_LIB",
 		"QT_NETWORK_LIB",
@@ -937,6 +944,7 @@
 		"QT_WIDGETS_LIB",
 		"UNICODE",
 		"WIN32",
+		"WIN32_LEAN_AND_MEAN",
 		"WIN64",
 		"_ENABLE_EXTENDED_ALIGNED_STORAGE",
 		"_UNICODE",
@@ -967,7 +975,8 @@
 		"D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtOpenGL",
 		"D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtWebChannel",
 		"D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtPositioning",
-		"D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtPrintSupport"
+		"D:/Apps/Qt/Qt_App/6.7.3/msvc2022_64/include/QtPrintSupport",
+		"D:/Qt_Projects/vcpkg/installed/x64-windows/include"
 	],
 	"MOC_MACRO_NAMES" : 
 	[
